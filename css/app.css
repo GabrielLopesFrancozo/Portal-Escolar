@@ -1,6 +1,19 @@
 .bg-primary{
     background-color: #3B307E !important;
 }
+.bg-secondary{
+    background-color: #594e8a !important;
+}
+
+.tarefas{
+    background-color: #e4e2f0;
+}
+
+.tarefas:hover{
+    cursor: pointer;
+    background-color: #c6c3d6;
+    transition: 0.2s;
+}
 
 .card-img-top{
     height: 13.5rem;
@@ -10,8 +23,6 @@
     transform: scale(1.015);
     animation: scale 0.2s;
     cursor: pointer;
-    border-color: #3B307E;
-    border: 1px solid;
 }
 
 @keyframes scale {
