@@ -1,5 +1,27 @@
 <?php
-// include("./db/conexao.php");
+include("./db/db-connection.php");
+
+session_start();
+if (isset($_SESSION["email"]) and isset($_SESSION["senha"])) {
+    $email = $_SESSION["email"];
+    $senha = $_SESSION["senha"];
+    $nome = $_SESSION["nome"];
+
+    $sql = "SELECT * FROM tb_alunos WHERE email = '{$email}' and senha = '{$senha}'";
+    $rs = mysqli_query($con, $sql);
+    $dados = mysqli_fetch_assoc($rs);
+    $linha = mysqli_num_rows($rs);
+
+    if ($linha == 0) {
+        session_unset();
+        session_destroy();
+        header('Location: login.php');
+        exit();
+    }
+} else {
+    header('Location: login.php');
+    exit();
+}
 
 if (isset($_GET["menu"])) {
     $menu = $_GET["menu"];
@@ -16,14 +38,19 @@ if (isset($_GET["menu"])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portal Matosinho</title>
     <link rel="shortcut icon" href="./Assets/Favicon.png" type="image/x-icon">
+    <link rel="stylesheet" href="./css/app.css">
+
+    <!-- bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="./css/app.css">
+
+    <!-- swiper -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 </head>
 
 <body class="bg-light vh-100">
-    <header class="container-fluid bg-primary" style="margin-bottom: 5.5rem;">
-        <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+    <header class="container-fluid" style="margin-bottom: 5.5rem; background-color: #3B307E">
+        <nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="background-color: #3B307E">
             <div class="container">
                 <a class="navbar-brand" href="index.php"><img src="./Assets/Favicon.png" alt="Icone escrito JMM" width="40"></a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -38,8 +65,8 @@ if (isset($_GET["menu"])) {
                         <li class="nav-item"><a class="nav-link <?php echo ($menu == 'contato') ? 'active' : '' ?>" href="index.php?menu=contato"><i class="bi bi-chat-fill"></i> Contato</a></li>
                     </ul>
                     <div class="d-inline">
-                        <p class="text-white d-inline me-3">João Matosinho da Silva</p>
-                        <button class="btn btn-outline-light">Sair</button>
+                        <p class="text-white d-inline me-3"><?= $nome?></p>
+                        <a href="logout.php" class="btn btn-outline-light">Sair</a>
                     </div>
                 </div>
             </div>
@@ -96,19 +123,19 @@ if (isset($_GET["menu"])) {
         }
         ?>
     </main>
-    <footer class="container-fluid bg-primary text-white" style="margin-top: 6rem; opacity: 0.9">
+    <footer class="container-fluid text-white footer ps-5 pe-5" style="margin-top: 6rem; opacity: 1; background-color: #3B307E">
         <div class="row pt-5 pb-5">
             <section class="col-md-4">
                 <h4>José Maria Matosinho</h4>
                 <ul class="nav flex-column">
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="#">Aluno</a>
+                        <a class="nav-link text-white a-underlined" href="#">Aluno</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="#">Professor</a>
+                        <a class="nav-link text-white a-underlined" href="#">Professor</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="#">Coordenador</a>
+                        <a class="nav-link text-white a-underlined" href="#">Coordenador</a>
                     </li>
                 </ul>
             </section>
@@ -116,16 +143,16 @@ if (isset($_GET["menu"])) {
                 <h4>Contato</h4>
                 <ul class="nav flex-column">
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="#">Email: Matosinho@exemplo.com</a>
+                        <a class="nav-link text-white a-underlined" href="#">Email: Matosinho@exemplo.com</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="tel:+5511999999999">Telefone: (11) 99999-9999</a>
+                        <a class="nav-link text-white a-underlined" href="tel:+5511999999999">Telefone: (11) 99999-9999</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="https://wa.me/5511999999999?text=Quero%20saber%20mais%20sobre%20a%20escola!" target="_blank">Whatsapp: (11) 99999-9999</a>
+                        <a class="nav-link text-white a-underlined" href="https://wa.me/5511999999999?text=Quero%20saber%20mais%20sobre%20a%20escola!" target="_blank">Whatsapp: (11) 99999-9999</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="#">Telegram: @Matosinho</a>
+                        <a class="nav-link text-white a-underlined" href="#">Telegram: @Matosinho</a>
                     </li>
                 </ul>
             </section>
@@ -133,13 +160,13 @@ if (isset($_GET["menu"])) {
                 <h4>Redes Sociais</h4>
                 <ul class="nav flex-column">
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="https://www.facebook.com/" target="_blank"><i class="bi bi-facebook"></i> Facebook</a>
+                        <a class="nav-link text-white a-underlined" href="https://www.facebook.com/" target="_blank"><i class="bi bi-facebook"></i> Facebook</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="https://www.instagram.com/" target="_blank"><i class="bi bi-instagram"></i> Instagram</a>
+                        <a class="nav-link text-white a-underlined" href="https://www.instagram.com/" target="_blank"><i class="bi bi-instagram"></i> Instagram</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="https://www.linkedin.com/" target="_blank"><i class="bi bi-linkedin"></i> LinkedIn</a>
+                        <a class="nav-link text-white a-underlined" href="https://www.linkedin.com/" target="_blank"><i class="bi bi-linkedin"></i> LinkedIn</a>
                     </li>
                 </ul>
             </section>
@@ -149,7 +176,13 @@ if (isset($_GET["menu"])) {
             </section>
         </div>
     </footer>
+
+    <!-- bootstrap -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+    <!-- swiper -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="./js/swiper.js"></script>
 </body>
 
 </html>

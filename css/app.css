@@ -1,17 +1,18 @@
-.bg-primary{
-    background-color: #3B307E !important;
-}
-.bg-secondary{
-    background-color: #594e8a !important;
+:root{
+    --primary-color: #3B307E;
+    --secondary-color: #c6c3d6;
+    --tertiary-color: #f2f1f8;
+    --white-color: #fff;
+    --black-color: #000;
 }
 
 .tarefas{
-    background-color: #e4e2f0;
+    background-color: var(--tertiary-color);
 }
 
 .tarefas:hover{
+    background-color: var(--secondary-color);
     cursor: pointer;
-    background-color: #c6c3d6;
     transition: 0.2s;
 }
 
@@ -19,10 +20,13 @@
     height: 13.5rem;
 }
 
-.card:hover{
+.card-1:hover{
+    background-color: var(--primary-color);
+    cursor: pointer;
+    color: var(--white-color);
     transform: scale(1.015);
     animation: scale 0.2s;
-    cursor: pointer;
+    transition: 0.2s;
 }
 
 @keyframes scale {
@@ -33,3 +37,30 @@
         transform: scale(1.015);
     }
 }
+
+.swiper {
+    width: 60%;
+    height: 30rem;
+}
+
+.swiper-pagination-bullet {
+    background-color: var(--primary-color) !important;
+  }
+
+.a-underlined:hover{
+    text-decoration: underline;
+}
+
+body::-webkit-scrollbar {
+    width: 1rem;               /* width of the entire scrollbar */
+  }
+  
+  body::-webkit-scrollbar-track {
+    background: var(--tertiary-color);        /* color of the tracking area */
+  }
+  
+  body::-webkit-scrollbar-thumb {
+    background-color: var(--secondary-color);    /* color of the scroll thumb */
+    border-radius: 20px;       /* roundness of the scroll thumb */
+    border: 3px solid var(--tertiary-color);  /* creates padding around scroll thumb */
+  } 
